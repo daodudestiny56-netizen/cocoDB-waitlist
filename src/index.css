@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: "Space Grotesk", sans-serif;
+    background-color: #030305;
+    color: #ffffff;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-white antialiased overflow-x-hidden;
+    /* Better mobile scrolling */
+    -webkit-overflow-scrolling: touch;
+    /* Remove tap highlight on mobile */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Improve touch targets on mobile */
+  button, a {
+    touch-action: manipulation;
+  }
+}
+
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
+  }
+  .bg-aura {
+    background: radial-gradient(circle at center, rgba(249, 115, 22, 0.15) 0%, transparent 70%);
+  }
+  
+  /* Prevent text selection on interactive elements */
+  .no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+}
