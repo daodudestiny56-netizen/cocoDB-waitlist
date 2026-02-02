@@ -64,10 +64,10 @@ export function Hero() {
         // Try multiple ways to get the error message
         const errorResponse = error.response?.data;
         const errorDetail = errorResponse?.error?.detail || "";
-        const errorMessage = errorResponse?.error?.message || errorResponse?.message || error.message || "";
+        const responseError = errorResponse?.error?.message || errorResponse?.message || error.message || "";
         
         // Combine all error text for checking
-        const allErrorText = (errorDetail + " " + errorMessage).toLowerCase();
+        const allErrorText = (errorDetail + " " + responseError).toLowerCase();
         
         console.log("Combined error text:", allErrorText);
         
