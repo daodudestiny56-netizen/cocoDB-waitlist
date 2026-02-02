@@ -94,9 +94,9 @@ export function Hero() {
         } else if (errorDetail) {
           // Use the detail message if available
           errorMsg = errorDetail;
-        } else if (errorMessage && errorMessage.length < 100) {
+        } else if (responseError && responseError.length < 100) {
           // Use the message if it's reasonably short
-          errorMsg = errorMessage;
+          errorMsg = responseError;
         }
         
         console.log("Final error message:", errorMsg);
@@ -225,7 +225,7 @@ export function Hero() {
                                 <Check className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />
                             </motion.div>
                             <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">Account Created!</h3>
-                            <p className="text-sm sm:text-base text-gray-400">You've been added to the waitlist. We'll notify you when CocoDB launches!</p>
+                            <p className="text-sm sm:text-base text-gray-400">You&apos;ve been added to the waitlist. We&apos;ll notify you when CocoDB launches!</p>
                         </div>
                      </motion.div>
                 ) : (
