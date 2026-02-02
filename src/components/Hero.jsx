@@ -28,11 +28,15 @@ export function Hero() {
     }
 
     try {
-        // Register user with Cocobase Auth using custom metadata
-        const authResponse = await db.auth.register(email, password, {
-          early_access: true,
-          signup_date: new Date().toISOString(),
-          user_status: "active"
+        // Register user with Cocobase Auth using the correct SDK signature
+        const authResponse = await db.auth.register({
+          email: email,
+          password: password,
+          data: {
+            early_access: true,
+            signup_date: new Date().toISOString(),
+            user_status: "active"
+          }
         });
     
         if (authResponse && authResponse.user) {
