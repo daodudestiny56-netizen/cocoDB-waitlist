@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { db } from '../config/cocobase';
-import { ArrowRight, Check, Loader2 } from 'lucide-react';
+import { ArrowRight, Check, Loader2, Eye, EyeOff } from 'lucide-react';
 import { cn } from '../lib/utils';
 import logo from '../assets/logo-icon.png';
 
@@ -10,6 +10,7 @@ export function Hero() {
   const [password, setPassword] = useState('');
   const [status, setStatus] = useState('idle'); // idle, loading, success, error
   const [errorMessage, setErrorMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
 
   const handleSignUp = async (e) => {
@@ -78,7 +79,11 @@ export function Hero() {
         } else if (allErrorText.includes("invalid email")) {
           errorMsg = "Please enter a valid email address.";
         } else if (allErrorText.includes("password")) {
-          errorMsg = "Password must be at least 8 characters.";
+          if (allErrorText.includes("short") || allErrorText.includes("length")) {
+            errorMsg = "Password must be at least 8 characters.";
+          } else {
+            errorMsg = "Invalid password. Please try another one.";
+          }
         } else if (errorDetail) {
           errorMsg = errorDetail;
         } else if (responseError && responseError.length < 100) {
@@ -240,14 +245,21 @@ export function Hero() {
                         <div className="relative group">
                             <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-secondary rounded-lg md:rounded-xl opacity-30 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500 blur"></div>
                             <input 
-                                type="password" 
+                                type={showPassword ? "text" : "password"} 
                                 placeholder="Create a password" 
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                                 minLength={8}
-                                className="relative w-full bg-surface border border-white/10 rounded-lg md:rounded-xl px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base text-white placeholder:text-gray-500 focus:outline-none focus:bg-surface/90 focus:border-transparent transition-all duration-300"
+                                className="relative w-full bg-surface border border-white/10 rounded-lg md:rounded-xl px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base text-white placeholder:text-gray-500 focus:outline-none focus:bg-surface/90 focus:border-transparent transition-all duration-300 pr-12"
                             />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors z-20"
+                            >
+                                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                            </button>
                         </div>
 
                         {/* Submit Button */}
