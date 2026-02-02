@@ -19,6 +19,13 @@ export function Hero() {
     setStatus('loading');
     setErrorMessage('');
 
+    // Check if configuration is present before attempting signup
+    if (!import.meta.env.VITE_COCOBASE_API_KEY || !import.meta.env.VITE_COCOBASE_PROJECT_ID) {
+        setStatus('error');
+        setErrorMessage("Configuration error: Cocobase API keys are missing. Please set them in your environment variables.");
+        return;
+    }
+
     try {
         // Register user with Cocobase Auth (creates account with email & password)
         const authResponse = await db.auth.register({
@@ -50,11 +57,6 @@ export function Hero() {
       } catch (error) {
         console.error("=== SIGNUP ERROR ===");
         console.error("Full error:", error);
-        console.error("Error message:", error.message);
-        console.error("Error response:", error.response);
-        console.error("Error response data:", error.response?.data);
-        console.error("Error response data error:", error.response?.data?.error);
-        console.error("Error response data error detail:", error.response?.data?.error?.detail);
         
         setStatus('error');
         
@@ -69,37 +71,19 @@ export function Hero() {
         // Combine all error text for checking
         const allErrorText = (errorDetail + " " + responseError).toLowerCase();
         
-        console.log("Combined error text:", allErrorText);
-        
-        // Check for specific error patterns
         if (allErrorText.includes("already exists") || 
-            allErrorText.includes("duplicate") || 
-            allErrorText.includes("user with this email")) {
-          errorMsg = "This email is already registered. Please use a different email.";
-        } else if (allErrorText.includes("invalid email") || 
-                   allErrorText.includes("email format")) {
+            allErrorText.includes("duplicate")) {
+          errorMsg = "This email is already registered.";
+        } else if (allErrorText.includes("invalid email")) {
           errorMsg = "Please enter a valid email address.";
         } else if (allErrorText.includes("password")) {
-          if (allErrorText.includes("short") || allErrorText.includes("length") || allErrorText.includes("8")) {
-            errorMsg = "Password must be at least 8 characters long.";
-          } else {
-            errorMsg = "Invalid password. Please try a different one.";
-          }
-        } else if (allErrorText.includes("network") || 
-                   allErrorText.includes("fetch") || 
-                   allErrorText.includes("connection")) {
-          errorMsg = "Network error. Please check your connection and try again.";
-        } else if (allErrorText.includes("timeout")) {
-          errorMsg = "Request timed out. Please try again.";
+          errorMsg = "Password must be at least 8 characters.";
         } else if (errorDetail) {
-          // Use the detail message if available
           errorMsg = errorDetail;
         } else if (responseError && responseError.length < 100) {
-          // Use the message if it's reasonably short
           errorMsg = responseError;
         }
         
-        console.log("Final error message:", errorMsg);
         setErrorMessage(errorMsg);
       }
   };
