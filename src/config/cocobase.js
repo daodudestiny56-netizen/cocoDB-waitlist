@@ -10,8 +10,7 @@ const COCOBASE_CONFIG = {
 
 // Validate configuration
 if (!COCOBASE_CONFIG.apiKey || !COCOBASE_CONFIG.projectId || !COCOBASE_CONFIG.baseURL) {
-  console.error('❌ Cocobase configuration is missing. Please check your .env file.');
-  throw new Error('Cocobase configuration is missing');
+  console.warn('⚠️ Cocobase configuration is missing. Please check your .env file or environment variables.');
 }
 
 // Initialize and export Cocobase instance
